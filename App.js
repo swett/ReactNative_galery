@@ -12,7 +12,8 @@ import FeedComponent from './components/FeedComponent';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import FullPhotoView from './components/PhotoComponent';
-
+import { Provider } from 'react-redux';
+import store from './reducer';
 
 const Stack = createStackNavigator();
 
@@ -39,12 +40,14 @@ const App = () => {
 
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name='Home' component={HomeScreen} />
-        <Stack.Screen name='Details' component={DetailScreen} options={{ headerShown: false }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name='Home' component={HomeScreen} />
+          <Stack.Screen name='Details' component={DetailScreen} options={{ headerShown: false }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 };
 

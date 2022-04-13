@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
+import { connect } from 'react-redux';
 
 let URL = "https://api.unsplash.com/photos/?client_id=ab3411e4ac868c2646c0ed488dfd919ef612b04c264f3374c97fff98ed253dc9"
 
@@ -14,6 +15,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         alignSelf: "center",
         paddingLeft: 10,
+        color: "black"
     },
     boxshadow: {
         shadowColor: "#000",
@@ -39,12 +41,15 @@ const styles = StyleSheet.create({
     },
     paddingButtom: {
         paddingBottom: 20,
+    },
+    textColor: {
+        color: "black"
     }
 })
 
 
 const PhotoComponent = ({ image, navigation }) => {
-    const { images, centertext, boxshadow, roundimage, textunderImage, paddingButtom } = styles;
+    const { images, centertext, boxshadow, roundimage, textunderImage, paddingButtom, textColor } = styles;
 
     return (
         <SafeAreaView>
@@ -69,25 +74,19 @@ const PhotoComponent = ({ image, navigation }) => {
 
 
 
-const FeedComponent = ({ navigation }) => {
-    const [image, setImages] = useState("");
-
+const FeedComponent = ({ navigation, image }) => {
+    console.log(image.images);
+    const { textColor } = styles;
     useEffect(() => {
-        axios.get(URL)
-            .then(response => {
-                setImages(response.data)
-            })
-            .catch(error => {
-                console.log(error)
-            })
+
     })
     return (
         <ScrollView>
-            {image ? image.map((image, id) => <PhotoComponent key={id} image={image} navigation={navigation} />) : <Text>...Fetch Data</Text>}
+            {image.images ? image.images.map((image, id) => <PhotoComponent key={id} image={image} navigation={navigation} />) : <Text style={textColor}>...Fetch Data</Text>}
         </ScrollView>
     )
 }
 
 
 
-export default FeedComponent;
+export default connect(state => ({ image: state.images }))(FeedComponent);
