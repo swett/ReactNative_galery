@@ -1,6 +1,6 @@
 import axios from 'axios';
-import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Image, ScrollView, SafeAreaView, TouchableOpacity} from 'react-native'
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
 
 let URL = "https://api.unsplash.com/photos/?client_id=ab3411e4ac868c2646c0ed488dfd919ef612b04c264f3374c97fff98ed253dc9"
 
@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
     boxshadow: {
         shadowColor: "#000",
         shadowOffset: {
-	    width: 0,
-	    height: 7,
+            width: 0,
+            height: 7,
         },
         shadowOpacity: 0.41,
         shadowRadius: 20,
@@ -43,47 +43,47 @@ const styles = StyleSheet.create({
 })
 
 
-const PhotoComponent = ({image,navigation}) => {
-    const {images, centertext, boxshadow, roundimage, textunderImage, paddingButtom} = styles;
-    console.log(image.user);
+const PhotoComponent = ({ image, navigation }) => {
+    const { images, centertext, boxshadow, roundimage, textunderImage, paddingButtom } = styles;
+
     return (
         <SafeAreaView>
-            <TouchableOpacity style={paddingButtom} onPress={() => navigation.navigate('Details')}>
+            <TouchableOpacity style={paddingButtom} onPress={() => navigation.navigate('Details', { imageId: image.id, image: image.urls.regular })}>
 
-            <View style={boxshadow}>
-            <Image style={images} source={{uri: `${image.urls.regular}`,}}/>
-            </View>
-            <View style={textunderImage}>
-            <Image style={roundimage} resizeMode="cover" source={{uri: `${image.user.profile_image.medium}`,}}/> 
-            <Text style={centertext}>
-           
-                {image.user.username}
-            </Text>
+                <View style={boxshadow}>
+                    <Image style={images} source={{ uri: `${image.urls.regular}`, }} />
+                </View>
+                <View style={textunderImage}>
+                    <Image style={roundimage} resizeMode="cover" source={{ uri: `${image.user.profile_image.medium}`, }} />
+                    <Text style={centertext}>
 
-            </View>
+                        {image.user.username}
+                    </Text>
+
+                </View>
             </TouchableOpacity>
-            
-        </SafeAreaView>
+
+        </SafeAreaView >
     )
 }
 
 
 
-const FeedComponent = ({navigation}) => {
+const FeedComponent = ({ navigation }) => {
     const [image, setImages] = useState("");
 
     useEffect(() => {
         axios.get(URL)
             .then(response => {
                 setImages(response.data)
-            }  )
+            })
             .catch(error => {
                 console.log(error)
             })
     })
     return (
         <ScrollView>
-            {image ? image.map((image,id) => <PhotoComponent key={id} image={image} navigation={navigation}  />) : <Text>...Fetch Data</Text>}
+            {image ? image.map((image, id) => <PhotoComponent key={id} image={image} navigation={navigation} />) : <Text>...Fetch Data</Text>}
         </ScrollView>
     )
 }

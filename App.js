@@ -7,53 +7,55 @@
  */
 import 'react-native-gesture-handler'
 import React from 'react';
-import { StyleSheet,Text,View,} from 'react-native';
+import { StyleSheet, Text, View, } from 'react-native';
 import FeedComponent from './components/FeedComponent';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import FullPhotoView from './components/PhotoComponent';
 
 
 const Stack = createStackNavigator();
 
-const HomeScreen = ({navigation}) => {
-  const {container} = styles
+const HomeScreen = ({ navigation }) => {
+  const { container } = styles
   return (
     <View style={container}>
-    <Text>Hello World</Text>
-    <FeedComponent navigation={navigation}/>
-  </View>
+      <FeedComponent navigation={navigation} />
+    </View>
   )
 }
 
-const DetailScreen = () => {
-  const {container} = styles;
+const DetailScreen = ({ route }) => {
+  const { container, textColor } = styles;
   return (
     <View style={container}>
-      <Text>Detail</Text>
+      <FullPhotoView route={route} />
     </View>
   )
 }
 
 
 const App = () => {
- 
+
 
   return (
-   <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name='Home' component={HomeScreen}/>
-            <Stack.Screen name='Details' component={DetailScreen}/>
-        </Stack.Navigator>
-   </NavigationContainer>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name='Home' component={HomeScreen} />
+        <Stack.Screen name='Details' component={DetailScreen} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
     flexDirection: "column",
-    marginTop: 35,
     alignItems: "center"
+  },
+  textColor: {
+    color: "black",
   }
 });
 
